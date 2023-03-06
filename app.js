@@ -1,15 +1,19 @@
+// global informations
+let count = 5;
+let wins = 0;
+let draws = 0;
+let loss = 0;
+
+
+// functions
 let game = (start) => {
     start = confirm('Welcome this is Paper Rock Scissors Game - Please click OK');
-    let count = 5;
-    let wins = 0;
-    let draws = 0;
-    let loss = 0;
 
     if (start) {
         while (count > 0) {
 
             // Game logic
-            let playerOpt = prompt(`Rounds left : ${count--} - Please type in : [rock or paper or scissors`);
+            let playerOpt = checkCorrectInput(); // Assure correct input
             let computerOpt = computerPlay();
 
             let result = playRound(playerOpt, computerOpt);
@@ -37,7 +41,7 @@ let game = (start) => {
 }
 
 let playRound = (playerSelection, computerSelection) => {
-    let player = playerSelection.toLowerCase().trim();
+    let player = playerSelection;
     let computer = computerSelection;
 
 
@@ -49,11 +53,27 @@ let playRound = (playerSelection, computerSelection) => {
     if (player == 'rock' && computer == 'paper' || player == 'scissors' && computer == 'rock' || player == 'paper' && computer == 'scissors')
         return -1;
 
-    return 1;
+    if (computer == 'rock' && player == 'paper' || computer == 'scissors' && player == 'rock' || computer == 'paper' && player == 'scissors')
+        return 1;
+
+    return -2;
+}
+
+let checkCorrectInput = () => {
+
+    let string = `Rounds left : ${count} - Please type in : [rock or paper or scissors`;
+    const options = ['rock', 'paper', 'scissors']
+    let promptVal = prompt(string).toLowerCase().trim();
+
+    while (!options.includes(promptVal)) {
+        promptVal = prompt(`Wrong input - Only [rock - paper - scissors] \n\n ${string}`).toLowerCase().trim();
+    }
+    count--;
+    return promptVal;
 }
 
 let computerPlay = () => {
-    let options = ['rock', 'paper', 'scissors']
+    const options = ['rock', 'paper', 'scissors']
 
     return options[Math.trunc(Math.random() * options.length)];
 }
@@ -84,6 +104,8 @@ let isWin = (wins, loss, draws) => {
     return "it's a draw for this game.";
 }
 
+
+//Main function
 let main = () => {
 
     let start = false;
@@ -94,4 +116,5 @@ let main = () => {
     while (!start);
 }
 
+//Call of the main function
 main();
