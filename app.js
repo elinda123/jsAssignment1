@@ -5,41 +5,38 @@ let draws = 0;
 let loss = 0;
 
 // functions
-let game = (start) => {
-    start = confirm('Welcome this is Paper Rock Scissors Game - Please click OK');
+function game() {
 
-    if (start) {
-        while (count > 0) {
+    // Game logic
+    let playerOpt = checkCorrectInput(); // Assure correct input
+    let computerOpt = computerPlay();
 
-            // Game logic
-            let playerOpt = checkCorrectInput(); // Assure correct input
-            let computerOpt = computerPlay();
+    let result = playRound(playerOpt, computerOpt);
+    let resultMsg = `${roundResultMessage(result)} \n\n The computer chose : ${computerOpt} - You chose : ${playerOpt}`;
 
-            let result = playRound(playerOpt, computerOpt);
-            let resultMsg = `${resultMessage(result)} \n\n The computer chose : ${computerOpt} - You chose : ${playerOpt}`;
+    if (result == 1)
+        wins++;
+    else if (result == 0)
+        draws++;
+    else
+        loss++;
 
-            if (result == 1)
-                wins++;
-            else if (result == 0)
-                draws++;
-            else
-                loss++;
+    // Console output
+    console.log(resultMsg);
 
-            // Console output
-            console.log(resultMsg);
-
-            // Window output
-            alert(resultMsg);
-        }
-        let finalResult = isWin(wins, loss, draws) + ` - Wins: ${wins} Loss: ${loss} Draws: ${draws}`;
-
-        console.log(finalResult);
-        alert(finalResult);
-    }
+    // Window output
+    alert(resultMsg);
 
 }
 
-let playRound = (playerSelection, computerSelection) => {
+function finalResultMessage() {
+    let finalResult = isWin(wins, loss, draws) + ` - Wins: ${wins} Loss: ${loss} Draws: ${draws}`;
+
+    console.log(finalResult);
+    alert(finalResult);
+}
+
+function playRound(playerSelection, computerSelection) {
     let player = playerSelection;
     let computer = computerSelection;
 
@@ -56,26 +53,15 @@ let playRound = (playerSelection, computerSelection) => {
     return -2;
 }
 
-let checkCorrectInput = () => {
 
-    let string = `Rounds left : ${count} - Please type in : [rock or paper or scissors]`;
-    const options = ['rock', 'paper', 'scissors']
-    let promptVal = prompt(string).toLowerCase().trim();
 
-    while (!options.includes(promptVal)) {
-        promptVal = prompt(`Wrong input - Only [rock - paper - scissors] \n\n ${string}`).toLowerCase().trim();
-    }
-    count--;
-    return promptVal;
-}
-
-let computerPlay = () => {
+function computerPlay() {
     const options = ['rock', 'paper', 'scissors']
 
     return options[Math.trunc(Math.random() * options.length)];
 }
 
-let resultMessage = (result) => {
+function roundResultMessage(result) {
     let PLAYERWON = 'Congrats You won!!';
     let COMPUTERWON = 'Hard luck maybe next time...';
     let DRAW = 'It\'s a draw.';
@@ -92,7 +78,7 @@ let resultMessage = (result) => {
     }
 }
 
-let isWin = (wins, loss, draws) => {
+function isWin(wins, loss, draws) {
     if (wins > loss)
         return "You won the game !";
     if (loss > wins)
@@ -101,15 +87,26 @@ let isWin = (wins, loss, draws) => {
     return "it's a draw for this game.";
 }
 
+function checkCorrectInput() {
+
+    let string = `Rounds left : ${count} - Please type in : [rock or paper or scissors]`;
+    const options = ['rock', 'paper', 'scissors']
+    let promptVal = prompt(string);
+
+    while (!options.includes(promptVal) || promptVal === null) {
+        promptVal = prompt(`Wrong input - Only [rock - paper - scissors] \n\n ${string}`);
+    }
+    count--;
+    return promptVal.toLowerCase().trim();
+}
 
 //Main function
-let main = () => {
-    let start = false;
-    do {
-        game(start);
-    }
-    while (!start);
+function main() {
+    while (count > 0)
+        game();
+    finalResultMessage();
 }
 
 //Call of the main function
-main();
+if (confirm('Welcome this is Paper Rock Scissors Game - Please click OK'))
+    main();
