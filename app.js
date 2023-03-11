@@ -44,8 +44,6 @@ let playRound = (playerSelection, computerSelection) => {
     let player = playerSelection;
     let computer = computerSelection;
 
-
-
     if (player == 'rock' && computer == 'rock' || player == 'paper' && computer == 'paper' || player == 'scissors' && computer == 'scissors') {
         return 0
     }
@@ -107,9 +105,7 @@ let isWin = (wins, loss, draws) => {
 
 //Main function
 let main = () => {
-
     let start = false;
-
     do {
         game(start);
     }
