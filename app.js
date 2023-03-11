@@ -4,7 +4,6 @@ let wins = 0;
 let draws = 0;
 let loss = 0;
 
-
 // functions
 let game = (start) => {
     start = confirm('Welcome this is Paper Rock Scissors Game - Please click OK');
