@@ -58,7 +58,7 @@ let playRound = (playerSelection, computerSelection) => {
 
 let checkCorrectInput = () => {
 
-    let string = `Rounds left : ${count} - Please type in : [rock or paper or scissors`;
+    let string = `Rounds left : ${count} - Please type in : [rock or paper or scissors]`;
     const options = ['rock', 'paper', 'scissors']
     let promptVal = prompt(string).toLowerCase().trim();
 
