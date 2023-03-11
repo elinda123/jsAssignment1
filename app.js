@@ -93,7 +93,7 @@ function checkCorrectInput() {
     const options = ['rock', 'paper', 'scissors']
     let promptVal = prompt(string);
 
-    while (!options.includes(promptVal) || promptVal === null) {
+    while (promptVal === null && !options.includes(promptVal)) {
         promptVal = prompt(`Wrong input - Only [rock - paper - scissors] \n\n ${string}`);
     }
     count--;
