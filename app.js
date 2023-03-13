@@ -112,14 +112,7 @@ function userInput(string) {
     return promptVal.toLowerCase().trim();
 }
 
-
-function checkCorrectInput(userInput) {
-
-    if (!options.includes(userInput))
-        return false;
-
-    return true;
-}
+const checkCorrectInput = (userInput) =>options.includes(userInput)? true:false;
 
 //Main function
 function main() {
