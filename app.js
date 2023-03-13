@@ -1,5 +1,7 @@
 // global informations
+const options = ['rock', 'paper', 'scissors']
 let count = 5;
+let onGoingCheck = true; // In case a player cancels in the middle of the game
 let wins = 0;
 let draws = 0;
 let loss = 0;
@@ -8,7 +10,18 @@ let loss = 0;
 function game() {
 
     // Game logic
-    let playerOpt = checkCorrectInput(); // Assure correct input
+    let playerOpt = userInput();
+
+    if (playerOpt === null)// Assure correct input
+        return;
+
+    while (!checkCorrectInput(playerOpt)) {
+        playerOpt = userInput('ERR');
+
+        if (playerOpt === null)// Assure correct input
+            return;
+    }
+
     let computerOpt = computerPlay();
 
     let result = playRound(playerOpt, computerOpt);
@@ -30,7 +43,16 @@ function game() {
 }
 
 function finalResultMessage() {
-    let finalResult = isWin(wins, loss, draws) + ` - Wins: ${wins} Loss: ${loss} Draws: ${draws}`;
+    let state = '';
+
+    if (wins > loss)
+        state = "You won the game !";
+    if (loss > wins)
+        state = 'You lost the game...';
+
+    state = "it's a draw for this game.";
+
+    let finalResult = state + ` - Wins: ${wins} Loss: ${loss} Draws: ${draws}`;
 
     console.log(finalResult);
     alert(finalResult);
@@ -39,6 +61,7 @@ function finalResultMessage() {
 function playRound(playerSelection, computerSelection) {
     let player = playerSelection;
     let computer = computerSelection;
+    count--;
 
     if (player == 'rock' && computer == 'rock' || player == 'paper' && computer == 'paper' || player == 'scissors' && computer == 'scissors') {
         return 0
@@ -54,12 +77,7 @@ function playRound(playerSelection, computerSelection) {
 }
 
 
-
-function computerPlay() {
-    const options = ['rock', 'paper', 'scissors']
-
-    return options[Math.trunc(Math.random() * options.length)];
-}
+const computerPlay = () => options[Math.trunc(Math.random() * options.length)];
 
 function roundResultMessage(result) {
     let PLAYERWON = 'Congrats You won!!';
@@ -78,33 +96,37 @@ function roundResultMessage(result) {
     }
 }
 
-function isWin(wins, loss, draws) {
-    if (wins > loss)
-        return "You won the game !";
-    if (loss > wins)
-        return 'You lost the game...';
+function userInput(string) {
+    let promptStr = `Rounds left : ${count} - Please type in : [rock or paper or scissors]`;
 
-    return "it's a draw for this game.";
+    if (string === 'ERR')
+        promptStr = `Wrong input - Only [rock - paper - scissors] \n\n Rounds left : ${count} - Please type in : [rock or paper or scissors]`;
+
+    let promptVal = prompt(promptStr);
+
+    if (promptVal === null) {
+        onGoingCheck = false;
+        return promptVal;
+    }
+
+    return promptVal.toLowerCase().trim();
 }
 
-function checkCorrectInput() {
 
-    let string = `Rounds left : ${count} - Please type in : [rock or paper or scissors]`;
-    const options = ['rock', 'paper', 'scissors']
-    let promptVal = prompt(string);
+function checkCorrectInput(userInput) {
 
-    while (promptVal === null && !options.includes(promptVal.toLowerCase().trim())) {
-        promptVal = prompt(`Wrong input - Only [rock - paper - scissors] \n\n ${string}`);
-    }
-    count--;
-    return promptVal.toLowerCase().trim();
+    if (!options.includes(userInput))
+        return false;
+
+    return true;
 }
 
 //Main function
 function main() {
-    while (count > 0)
+    while (count > 0 && onGoingCheck)
         game();
-    finalResultMessage();
+    if (onGoingCheck)
+        finalResultMessage();
 }
 
 //Call of the main function
